@@ -4,6 +4,7 @@ import LoginPage from './components/admin_login/LoginPage';
 import Sidebar from './components/sidebar/Sidebar';
 import Dashboard from './components/admin_dashboard/Dashboard';
 import AddEmployee from './components/employees/add_emp'; // Import the AddEmployee component
+import LeaveApprovalSystem from './components/leave_atteandance/LeaveApprovalSystem'; // Import the LeaveApprovalSystem component
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -61,6 +62,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <AddEmployee />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for LeaveApprovalSystem */}
+            <Route
+              path="/manage/leaves/approve"
+              element={
+                isAuthenticated ? (
+                  <LeaveApprovalSystem />
                 ) : (
                   <Navigate to="/" replace />
                 )

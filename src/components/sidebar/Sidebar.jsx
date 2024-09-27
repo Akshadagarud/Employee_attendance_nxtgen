@@ -107,15 +107,9 @@ const Sidebar = ({ onLogout }) => {
               onClick={() => navigate('/manage/leaves/approve')}
               className={`menu-item ${location.pathname === '/manage/leaves/approve' ? 'active' : ''}`}
             >
-              <ListItemText primary="Approve Leaves" />
+              <ListItemText primary="Manage Leaves" />
             </ListItem>
-            <ListItem 
-              button 
-              onClick={() => navigate('/manage/leaves/report')}
-              className={`menu-item ${location.pathname === '/manage/leaves/report' ? 'active' : ''}`}
-            >
-              <ListItemText primary="Leave Report" />
-            </ListItem>
+            {/* ... other leave-related items ... */}
           </NestedMenuItem>
         </NestedMenuItem>
         <ListItem button onClick={handleLogout} className="menu-item">
