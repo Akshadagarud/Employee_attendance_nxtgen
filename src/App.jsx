@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginPage from './components/admin_login/LoginPage';
 import Sidebar from './components/sidebar/Sidebar';
 import Dashboard from './components/admin_dashboard/Dashboard';
+import AddEmployee from './components/employees/add_emp'; // Import the AddEmployee component
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,6 +50,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <Dashboard />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for AddEmployee */}
+            <Route
+              path="/manage/employees/add"
+              element={
+                isAuthenticated ? (
+                  <AddEmployee />
                 ) : (
                   <Navigate to="/" replace />
                 )

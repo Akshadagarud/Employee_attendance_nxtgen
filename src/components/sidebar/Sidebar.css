@@ -12,23 +12,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px; /* Removed background-color */
+  padding: 24px;
 }
 
 .company-logo {
-  width: 90%; /* Increased from 80% */
-  max-width: 220px; /* Increased from 180px */
+  width: 90%;
+  max-width: 220px;
   height: auto;
 }
 
-.nested-list-item {
-  padding-left: 32px !important;
+.menu-item {
+  transition: background-color 0.3s ease;
 }
 
-.MuiListItem-root .MuiListItem-root {
-  padding-left: 32px;
+.menu-item:hover {
+  background-color: rgba(0, 128, 0, 0.1); /* Light green background on hover */
 }
 
-.MuiListItem-root .MuiListItem-root .MuiListItem-root {
-  padding-left: 48px;
+.menu-item.active > .MuiListItemText-root .MuiListItemText-primary {
+  color: #008000; /* Green color for text of active items */
+  font-weight: bold; /* Optional: make active text bold */
 }
+
+.menu-item.active > .MuiListItemIcon-root {
+  color: #008000; /* Green color for icons of active items */
+}
+
+/* Remove the subheading styles */
