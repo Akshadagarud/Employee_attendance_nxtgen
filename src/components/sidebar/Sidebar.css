@@ -1,0 +1,34 @@
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.sidebar .MuiDrawer-paper {
+  width: 280px;
+  box-sizing: border-box;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px; /* Removed background-color */
+}
+
+.company-logo {
+  width: 90%; /* Increased from 80% */
+  max-width: 220px; /* Increased from 180px */
+  height: auto;
+}
+
+.nested-list-item {
+  padding-left: 32px !important;
+}
+
+.MuiListItem-root .MuiListItem-root {
+  padding-left: 32px;
+}
+
+.MuiListItem-root .MuiListItem-root .MuiListItem-root {
+  padding-left: 48px;
+}
