@@ -11,6 +11,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import { useNavigate, useLocation } from 'react-router-dom';
 import companyLogo from './company-logo.png';
 import './Sidebar.css'; // Make sure to create this CSS file
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) => {
   const [open, setOpen] = useState(false);
@@ -114,7 +115,13 @@ const Sidebar = ({ onLogout }) => {
               primary="Manage Leaves"
               onClick={() => navigate('/manage/leaves/approve')}
               path="/manage/leaves/approve"
-              depth={2}
+              depth={3}
+            />
+            <NestedMenuItem
+              primary="Leave Calendar"
+              onClick={() => navigate('/leave-calendar')}
+              path="/leave-calendar"
+              depth={3}
             />
             {/* ... other leave-related items ... */}
           </NestedMenuItem>

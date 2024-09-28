@@ -5,6 +5,7 @@ import Sidebar from './components/sidebar/Sidebar';
 import Dashboard from './components/admin_dashboard/Dashboard';
 import AddEmployee from './components/employees/add_emp'; // Import the AddEmployee component
 import LeaveApprovalSystem from './components/leave_atteandance/LeaveApprovalSystem'; // Import the LeaveApprovalSystem component
+import LeaveCalendar from './components/leave_calendar/leave_calendar';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -73,6 +74,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <LeaveApprovalSystem />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for LeaveCalendar */}
+            <Route
+              path="/leave-calendar"
+              element={
+                isAuthenticated ? (
+                  <LeaveCalendar />
                 ) : (
                   <Navigate to="/" replace />
                 )
