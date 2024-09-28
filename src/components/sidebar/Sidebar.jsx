@@ -18,8 +18,12 @@ const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) =
   const isActive = location.pathname.startsWith(path);
 
   const handleClick = () => {
-    setOpen(!open);
     if (onClick) onClick();
+  };
+
+  const handleToggle = (event) => {
+    event.stopPropagation();
+    setOpen(!open);
   };
 
   return (
@@ -27,15 +31,21 @@ const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) =
       <ListItem 
         button 
         onClick={handleClick} 
-        style={{ paddingLeft: 16 * (depth + 1) }}
+        style={{ paddingLeft: 24 * (depth + 1) }}  // Increased padding multiplier
         className={`menu-item ${isActive ? 'active' : ''}`}
       >
         {icon && <ListItemIcon>{icon}</ListItemIcon>}
         <ListItemText primary={primary} />
-        {children && (open ? <ExpandLess /> : <ExpandMore />)}
+        {children && (
+          <ListItemIcon>
+            <Box onClick={handleToggle} sx={{ cursor: 'pointer' }}>
+              {open ? <ExpandLess /> : <ExpandMore />}
+            </Box>
+          </ListItemIcon>
+        )}
       </ListItem>
       {children && (
-        <Collapse in={open || isActive} timeout="auto" unmountOnExit>
+        <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {React.Children.map(children, child =>
               React.cloneElement(child, { depth: depth + 1 })
@@ -81,20 +91,18 @@ const Sidebar = ({ onLogout }) => {
             onClick={() => navigate('/manage/employees')}
             path="/manage/employees"
           >
-            <ListItem 
-              button 
+            <NestedMenuItem
+              primary="Add Employee"
               onClick={() => navigate('/manage/employees/add')}
-              className={`menu-item ${location.pathname === '/manage/employees/add' ? 'active' : ''}`}
-            >
-              <ListItemText primary="Add Employee" />
-            </ListItem>
-            <ListItem 
-              button 
+              path="/manage/employees/add"
+              depth={3}
+            />
+            <NestedMenuItem
+              primary="Employee List"
               onClick={() => navigate('/manage/employees/list')}
-              className={`menu-item ${location.pathname === '/manage/employees/list' ? 'active' : ''}`}
-            >
-              <ListItemText primary="Employee List" />
-            </ListItem>
+              path="/manage/employees/list"
+              depth={3}
+            />
           </NestedMenuItem>
           <NestedMenuItem
             icon={<EventNoteIcon />}
@@ -102,13 +110,12 @@ const Sidebar = ({ onLogout }) => {
             onClick={() => navigate('/manage/leaves')}
             path="/manage/leaves"
           >
-            <ListItem 
-              button 
+            <NestedMenuItem
+              primary="Manage Leaves"
               onClick={() => navigate('/manage/leaves/approve')}
-              className={`menu-item ${location.pathname === '/manage/leaves/approve' ? 'active' : ''}`}
-            >
-              <ListItemText primary="Manage Leaves" />
-            </ListItem>
+              path="/manage/leaves/approve"
+              depth={2}
+            />
             {/* ... other leave-related items ... */}
           </NestedMenuItem>
         </NestedMenuItem>
