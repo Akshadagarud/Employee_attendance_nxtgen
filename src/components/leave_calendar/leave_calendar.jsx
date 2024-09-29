@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -54,7 +54,7 @@ const CustomToolbar = ({ date, onNavigate, onView, view }) => {
         <button type="button" onClick={goToNext}>Next</button>
       </span>
       <span className="rbc-toolbar-label">
-        {/* This span can be used for a title or left empty */}
+        {moment(currentDate).format('MMMM YYYY')}
       </span>
       <span className="rbc-toolbar-select-group">
         <select value={currentDate.getMonth()} onChange={handleMonthChange}>
@@ -103,21 +103,16 @@ const CustomEvent = ({ event }) => (
   </div>
 );
 
-const leave_calendar = () => {
+const leave_calendar = ({ leaveData, onLeaveDataChange }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Static data for employee leaves in September
-  const leaveData = [
-    { start: new Date(2024, 8, 1), end: new Date(2024, 8, 5), employee: "John Doe", reason: "Vacation" },
-    { start: new Date(2024, 8, 3), end: new Date(2024, 8, 3), employee: "Jane Smith", reason: "Sick Leave" },
-    { start: new Date(2024, 8, 5), end: new Date(2024, 8, 7), employee: "Mike Johnson", reason: "Personal Leave" },
-    { start: new Date(2024, 8, 10), end: new Date(2024, 8, 14), employee: "Emily Brown", reason: "Work from Home" },
-    { start: new Date(2024, 8, 15), end: new Date(2024, 8, 15), employee: "David Wilson", reason: "Doctor's Appointment" },
-    { start: new Date(2024, 8, 18), end: new Date(2024, 8, 22), employee: "Sarah Davis", reason: "Conference" },
-    { start: new Date(2024, 8, 20), end: new Date(2024, 8, 20), employee: "Tom Harris", reason: "Family Emergency" },
-    { start: new Date(2024, 8, 25), end: new Date(2024, 8, 29), employee: "Lisa Martinez", reason: "Training" },
-    { start: new Date(2024, 8, 28), end: new Date(2024, 8, 28), employee: "Robert Taylor", reason: "Jury Duty" },
-  ];
+  useEffect(() => {
+    // If you want to update the leave data from within this component,
+    // you can do so here. For now, we'll just ensure it's set.
+    if (leaveData.length > 0) {
+      onLeaveDataChange(leaveData);
+    }
+  }, [leaveData, onLeaveDataChange]);
 
   const events = useCallback(() => {
     const eventMap = {};
@@ -157,7 +152,7 @@ const leave_calendar = () => {
         events={events()}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 600 }}
+        style={{ height: '70vh' }}
         components={{
           toolbar: CustomToolbar,
           event: CustomEvent

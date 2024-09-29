@@ -318,6 +318,10 @@
     padding: 16px;
   }
 
+  .leave-calendar-container h2 {
+    font-size: 24px;
+  }
+
   .rbc-toolbar {
     flex-direction: column;
     align-items: stretch;
@@ -325,14 +329,100 @@
 
   .rbc-toolbar-label {
     margin: 10px 0;
+    order: -1;
+  }
+
+  .rbc-btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .rbc-btn-group button {
+    flex: 1;
+    margin: 0 2px;
   }
 
   .rbc-toolbar-select-group {
-    justify-content: center;
+    display: flex;
+    justify-content: space-between;
     margin-top: 10px;
   }
 
   .rbc-toolbar-select-group select {
-    margin: 0 4px;
+    flex: 1;
+    margin: 0 2px;
   }
+
+  .rbc-month-view {
+    font-size: 12px;
+  }
+
+  .rbc-header {
+    padding: 6px;
+  }
+
+  .custom-event {
+    width: 24px;
+    height: 24px;
+  }
+
+  .event-count {
+    font-size: 12px;
+  }
+
+  .leave-modal {
+    max-width: 90%;
+    padding: 16px;
+  }
+
+  .leave-modal h3 {
+    font-size: 20px;
+  }
+
+  .leave-modal p, .leave-modal li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .leave-calendar-container h2 {
+    font-size: 20px;
+  }
+
+  .rbc-toolbar button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .rbc-toolbar-select-group select {
+    font-size: 14px;
+    padding: 4px 20px 4px 8px;
+  }
+
+  .rbc-month-view {
+    font-size: 10px;
+  }
+
+  .custom-event {
+    width: 20px;
+    height: 20px;
+  }
+
+  .event-count {
+    font-size: 10px;
+  }
+
+  .leave-modal h3 {
+    font-size: 18px;
+  }
+
+  .leave-modal p, .leave-modal li {
+    font-size: 12px;
+  }
+}
+
+/* Add this to ensure the calendar takes up the full width on smaller screens */
+.rbc-calendar {
+  width: 100% !important;
 }

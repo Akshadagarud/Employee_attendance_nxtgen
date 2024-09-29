@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import companyLogo from './company-logo.png';
 import './Sidebar.css'; // Make sure to create this CSS file
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AssessmentIcon from '@mui/icons-material/Assessment'; // Add this import for the Balance Leaves icon
 
 const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) => {
   const [open, setOpen] = useState(false);
@@ -123,7 +124,13 @@ const Sidebar = ({ onLogout }) => {
               path="/leave-calendar"
               depth={3}
             />
-            {/* ... other leave-related items ... */}
+            <NestedMenuItem
+              icon={<AssessmentIcon />}
+              primary="Balance Leaves"
+              onClick={() => navigate('/leave-balance')}
+              path="/leave-balance"
+              depth={3}
+            />
           </NestedMenuItem>
         </NestedMenuItem>
         <ListItem button onClick={handleLogout} className="menu-item">
