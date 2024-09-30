@@ -1,6 +1,6 @@
-// Sidebar.jsx
 import React, { useState } from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Collapse } from '@mui/material';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Collapse, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import FolderIcon from '@mui/icons-material/Folder';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -8,11 +8,12 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import PeopleIcon from '@mui/icons-material/People';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import AnnouncementIcon from '@mui/icons-material/Announcement'; // New import
+import AccessTimeIcon from '@mui/icons-material/AccessTime'; // New import
 import { useNavigate, useLocation } from 'react-router-dom';
 import companyLogo from './company-logo.png';
 import './Sidebar.css'; // Make sure to create this CSS file
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AssessmentIcon from '@mui/icons-material/Assessment'; // Add this import for the Balance Leaves icon
 
 const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) => {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,6 @@ const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) =
   return (
     <>
       <ListItem 
-        button 
         onClick={handleClick} 
         style={{ paddingLeft: 24 * (depth + 1) }}  // Increased padding multiplier
         className={`menu-item ${isActive ? 'active' : ''}`}
@@ -59,7 +59,7 @@ const NestedMenuItem = ({ icon, primary, children, onClick, depth = 0, path }) =
   );
 };
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = ({ onLogout, isMobile, isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -68,19 +68,25 @@ const Sidebar = ({ onLogout }) => {
     navigate('/');
   };
 
-  return (
-    <Drawer variant="permanent" anchor="left" className="sidebar">
+  const sidebarContent = (
+    <>
       <Box className="logo-container">
         <img src={companyLogo} alt="Company Logo" className="company-logo" />
       </Box>
       <List>
         <ListItem 
-          button 
           onClick={() => navigate('/dashboard')}
           className={`menu-item ${location.pathname === '/dashboard' ? 'active' : ''}`}
         >
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText primary="Home" />
+        </ListItem>
+        <ListItem 
+          onClick={() => navigate('/announcements')}
+          className={`menu-item ${location.pathname === '/announcements' ? 'active' : ''}`}
+        >
+          <ListItemIcon><AnnouncementIcon /></ListItemIcon>
+          <ListItemText primary="Announcements" />
         </ListItem>
         <NestedMenuItem 
           icon={<FolderIcon />} 
@@ -97,13 +103,32 @@ const Sidebar = ({ onLogout }) => {
               primary="Add Employee"
               onClick={() => navigate('/manage/employees/add')}
               path="/manage/employees/add"
-              depth={3}
+              depth={2}
             />
             <NestedMenuItem
               primary="Employee List"
               onClick={() => navigate('/manage/employees/list')}
               path="/manage/employees/list"
-              depth={3}
+              depth={2}
+            />
+          </NestedMenuItem>
+          <NestedMenuItem
+            icon={<AccessTimeIcon />}
+            primary="Attendance"
+            onClick={() => navigate('/manage/attendance')}
+            path="/manage/attendance"
+          >
+            <NestedMenuItem
+              primary="View Attendance"
+              onClick={() => navigate('/manage/attendance/view')}
+              path="/manage/attendance/view"
+              depth={2}
+            />
+            <NestedMenuItem
+              primary="Manage Attendance"
+              onClick={() => navigate('/manage/attendance/manage')}
+              path="/manage/attendance/manage"
+              depth={2}
             />
           </NestedMenuItem>
           <NestedMenuItem
@@ -116,29 +141,58 @@ const Sidebar = ({ onLogout }) => {
               primary="Manage Leaves"
               onClick={() => navigate('/manage/leaves/approve')}
               path="/manage/leaves/approve"
-              depth={3}
+              depth={2}
             />
             <NestedMenuItem
               primary="Leave Calendar"
               onClick={() => navigate('/leave-calendar')}
               path="/leave-calendar"
-              depth={3}
+              depth={2}
             />
             <NestedMenuItem
-              icon={<AssessmentIcon />}
               primary="Balance Leaves"
               onClick={() => navigate('/leave-balance')}
               path="/leave-balance"
-              depth={3}
+              depth={2}
             />
           </NestedMenuItem>
         </NestedMenuItem>
-        <ListItem button onClick={handleLogout} className="menu-item">
+        <ListItem onClick={handleLogout} className="menu-item">
           <ListItemIcon><LogoutIcon /></ListItemIcon>
           <ListItemText primary="Logout" />
         </ListItem>
       </List>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {isMobile && (
+        <IconButton
+          className="mobile-menu-button"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleSidebar}
+          edge="start"
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        anchor="left"
+        open={isMobile ? isOpen : true}
+        onClose={isMobile ? toggleSidebar : undefined}
+        classes={{
+          paper: 'sidebar',
+        }}
+        ModalProps={{
+          keepMounted: true,
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
+    </>
   );
 };
 

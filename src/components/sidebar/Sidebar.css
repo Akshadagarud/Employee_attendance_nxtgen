@@ -1,6 +1,9 @@
 .sidebar {
   width: 280px;
   flex-shrink: 0;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .sidebar .MuiDrawer-paper {
@@ -39,3 +42,29 @@
 }
 
 /* Remove the subheading styles */
+
+.mobile-menu-button {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1400; /* Increase this value to ensure it's above other content */
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0 0 4px 0; /* Rounded bottom-right corner */
+  padding: 12px;
+  margin: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .sidebar,
+  .sidebar .MuiDrawer-paper {
+    width: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar,
+  .sidebar .MuiDrawer-paper {
+    width: 200px;
+  }
+}

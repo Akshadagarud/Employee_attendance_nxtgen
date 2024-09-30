@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, CardContent, Typography, Tooltip } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardContent, Typography, Tooltip, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import GaugeChart from 'react-gauge-chart';
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip as RechartsTooltip, BarChart, CartesianGrid, XAxis, YAxis, Bar, AreaChart, Area } from 'recharts';
 import './Dashboard.css';
@@ -69,17 +69,132 @@ const Dashboard = () => {
   const totalWorkDays = 28 * 30; // 28 employees * 30 days
   const employeeDaysPresent = totalWorkDays - 296; // 296 is the Employee Days Absent
 
+  // Updated mock data for employees
+  const employees = [
+    'All',
+    'John Doe',
+    'Jane Smith',
+    'Mike Johnson',
+    'Emily Brown',
+    'David Lee',
+    // ... add more employee names as needed
+  ];
+
+  // State for filters
+  const [timeFilter, setTimeFilter] = useState('pastWeek');
+  const [employeeFilter, setEmployeeFilter] = useState('All');
+
+  // Function to get filtered attendance data based on time filter
+  const getFilteredAttendanceData = () => {
+    switch(timeFilter) {
+      case 'pastWeek':
+        return pastWeekAttendance;
+      case 'pastMonth':
+        return pastMonthAttendance;
+      case 'past3Months':
+        // You'll need to implement this data
+        return [];
+      case 'past6Months':
+        // You'll need to implement this data
+        return [];
+      case 'pastYear':
+        // You'll need to implement this data
+        return [];
+      default:
+        return pastWeekAttendance;
+    }
+  };
+
+  // New mock data for today's and past attendance
+  const totalEmployees = 28;
+  const todayAttendance = 25;
+  const todayAttendancePercentage = todayAttendance / totalEmployees;
+
+  const pastWeekAttendance = [
+    { day: 'Mon', attendance: 26 },
+    { day: 'Tue', attendance: 27 },
+    { day: 'Wed', attendance: 25 },
+    { day: 'Thu', attendance: 28 },
+    { day: 'Fri', attendance: 24 },
+    { day: 'Sat', attendance: 22 },
+    { day: 'Sun', attendance: 23 },
+  ];
+
+  const pastMonthAttendance = [
+    { week: 'Week 1', attendance: 92 },
+    { week: 'Week 2', attendance: 95 },
+    { week: 'Week 3', attendance: 90 },
+    { week: 'Week 4', attendance: 88 },
+  ];
+
+  // New mock data for employees with highest leaves
+  const topEmployeesByLeavesData = [
+    { name: 'John Doe', leaves: 15 },
+    { name: 'Jane Smith', leaves: 12 },
+    { name: 'Mike Johnson', leaves: 10 },
+    { name: 'Emily Brown', leaves: 9 },
+    { name: 'David Lee', leaves: 8 },
+  ];
+
   return (
     <div className="dashboard-container">
       <Typography variant="h4" className="dashboard-title">Attendance Dashboard</Typography>
       
-      {/* Top 5 Cards */}
+      {/* Top 4 Cards */}
       <div className="grid-container">
+        <div className="grid-item">
+          <Card className="card">
+            <CardContent className="card-content">
+              <FormControl variant="outlined" className="filter" fullWidth>
+                <InputLabel>Time Range</InputLabel>
+                <Select
+                  value={timeFilter}
+                  onChange={(e) => setTimeFilter(e.target.value)}
+                  label="Time Range"
+                >
+                  <MenuItem value="pastWeek">Past Week</MenuItem>
+                  <MenuItem value="pastMonth">Past Month</MenuItem>
+                  <MenuItem value="past3Months">Past 3 Months</MenuItem>
+                  <MenuItem value="past6Months">Past 6 Months</MenuItem>
+                  <MenuItem value="pastYear">Past Year</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl variant="outlined" className="filter" fullWidth>
+                <InputLabel>Employee</InputLabel>
+                <Select
+                  value={employeeFilter}
+                  onChange={(e) => setEmployeeFilter(e.target.value)}
+                  label="Employee"
+                >
+                  {employees.map((employee) => (
+                    <MenuItem key={employee} value={employee}>{employee}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="grid-item">
+          <Card className="card">
+            <CardContent className="card-content">
+              <Typography className="card-title" align="center" gutterBottom>Today's Attendance</Typography>
+              <Typography className="card-value" align="center" style={{ marginBottom: '10px' }}>
+                {todayAttendance}/{totalEmployees}
+              </Typography>
+              <CustomGauge 
+                rate={todayAttendancePercentage} 
+                title="" 
+                color={todayAttendancePercentage < 0.5 ? "#FF5722" : "#4CAF50"} 
+              />
+            </CardContent>
+          </Card>
+        </div>
         <div className="grid-item">
           <Card className="card">
             <CardContent className="card-content">
               <Typography className="card-title" align="center" gutterBottom>Employee Days Absent</Typography>
               <Typography className="card-value" align="center">296</Typography>
+              <CustomGauge rate={absenteeismRate} title="" color="#FF5722" />
             </CardContent>
           </Card>
         </div>
@@ -88,28 +203,80 @@ const Dashboard = () => {
             <CardContent className="card-content">
               <Typography className="card-title" align="center" gutterBottom>Employee Days Present</Typography>
               <Typography className="card-value" align="center">{employeeDaysPresent}</Typography>
+              <CustomGauge rate={attendanceRate} title="" color="#4CAF50" />
             </CardContent>
           </Card>
         </div>
-        <div className="grid-item">
+      </div>
+
+      {/* Past Attendance Chart */}
+      <div className="grid-container">
+        <div className="grid-item full-width">
           <Card className="card">
-            <CardContent className="card-content">
-              <Typography className="card-title" align="center" gutterBottom>Total Employees</Typography>
-              <Typography className="card-value" align="center">28</Typography>
+            <CardContent>
+              <Typography variant="h6" className="card-title">Past Attendance</Typography>
+              <div className="chart-container medium">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={getFilteredAttendanceData()}
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey={timeFilter === 'pastWeek' ? 'day' : 'week'} />
+                    <YAxis />
+                    <RechartsTooltip />
+                    <Bar dataKey="attendance" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
         </div>
-        <div className="grid-item">
+      </div>
+
+      {/* Bar and Area Charts Row */}
+      <div className="grid-container">
+        <div className="grid-item half-width">
           <Card className="card">
-            <CardContent className="card-content">
-              <CustomGauge rate={attendanceRate} title="Attendance Rate" color="#4CAF50" />
+            <CardContent>
+              <Typography variant="h6" className="card-title">Top 5 Employees by Leaves Taken</Typography>
+              <div className="chart-container medium">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={topEmployeesByLeavesData}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis dataKey="name" type="category" width={150} />
+                    <RechartsTooltip />
+                    <Bar dataKey="leaves" fill="#FF8042" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
         </div>
-        <div className="grid-item">
+
+        <div className="grid-item half-width">
           <Card className="card">
-            <CardContent className="card-content">
-              <CustomGauge rate={absenteeismRate} title="Absenteeism Rate" color="#FF5722" />
+            <CardContent>
+              <Typography variant="h6" className="card-title">Absences by Month</Typography>
+              <div className="chart-container medium">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart
+                    data={absencesByMonthData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <RechartsTooltip />
+                    <Area type="monotone" dataKey="absences" stroke="#8884d8" fill="#8884d8" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -197,54 +364,6 @@ const Dashboard = () => {
                     <RechartsTooltip formatter={(value) => `${value.toFixed(2)}%`} />
                     <Legend layout="horizontal" verticalAlign="bottom" align="center" />
                   </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Bar and Area Charts Row */}
-      <div className="grid-container">
-        <div className="grid-item half-width">
-          <Card className="card">
-            <CardContent>
-              <Typography variant="h6" className="card-title">Top 5 Employees by Attendance</Typography>
-              <div className="chart-container medium">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={topEmployeesByAttendanceData}
-                    layout="vertical"
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" width={150} />
-                    <RechartsTooltip />
-                    <Bar dataKey="attendance" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid-item half-width">
-          <Card className="card">
-            <CardContent>
-              <Typography variant="h6" className="card-title">Absences by Month</Typography>
-              <div className="chart-container medium">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={absencesByMonthData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <RechartsTooltip />
-                    <Area type="monotone" dataKey="absences" stroke="#8884d8" fill="#8884d8" />
-                  </AreaChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>

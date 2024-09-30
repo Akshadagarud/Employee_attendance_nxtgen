@@ -2,13 +2,14 @@
   padding: 24px;
   max-width: 800px;
   margin: 0 auto;
-  background-color: #1e3a2a; /* Darker green background */
+  background-color: #133421 !important;
   color: white;
+ 
 }
 
 .add-employee-form h2 {
   margin-bottom: 8px;
-  color: #4caf50; /* Light green for headings */
+  color: #4caf50; 
 }
 
 .add-employee-form .MuiTypography-subtitle1 {
@@ -21,24 +22,30 @@
   margin-bottom: 16px;
 }
 
-.add-employee-form .MuiInputBase-root {
+.add-employee-form .MuiInputBase-root,
+.add-employee-form .MuiInputLabel-root,
+.add-employee-form .MuiSelect-select {
   color: white;
 }
 
 .add-employee-form .MuiOutlinedInput-root {
-  fieldset {
-    border-color: #4caf50; /* Light green border */
+  & fieldset {
+    border-color: white;
   }
   &:hover fieldset {
-    border-color: #66bb6a; /* Slightly lighter green on hover */
+    border-color: white;
   }
   &.Mui-focused fieldset {
-    border-color: #81c784; /* Even lighter green when focused */
+    border-color: white;
   }
 }
 
-.add-employee-form .MuiInputLabel-root {
-  color: #a5d6a7; /* Light green for labels */
+.add-employee-form .MuiInputLabel-root.Mui-focused {
+  color: white;
+}
+
+.add-employee-form .MuiInput-underline:after {
+  border-bottom-color: white;
 }
 
 .add-employee-form .MuiButton-root {
@@ -68,4 +75,9 @@
 /* Add margin to form fields */
 .add-employee-form .MuiOutlinedInput-root {
   margin: 8px 0;
+}
+
+.add-employee-form .MuiButton-contained {
+  background-color: #15962d;
+  color: white;
 }

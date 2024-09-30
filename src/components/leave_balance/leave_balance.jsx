@@ -20,12 +20,17 @@ const LeaveBalanceReport = ({ leaveData }) => {
   useEffect(() => {
     const employeeMap = {};
     
-    const filteredLeaveData = leaveData.filter(leave => {
-      const leaveDate = moment(leave.start);
-      return leaveDate.year() === selectedYear && leaveDate.month() === selectedMonth;
-    });
-    
-    filteredLeaveData.forEach(leave => {
+    // Static dates for September 2024
+    const staticDates = [
+      { date: '2024-09-02', employee: 'John Doe', reason: 'Vacation', days: 1 },
+      { date: '2024-09-02', employee: 'Jane Smith', reason: 'Sick Leave', days: 1 },
+      { date: '2024-09-15', employee: 'Alice Johnson', reason: 'Personal Day', days: 1 },
+      { date: '2024-09-23', employee: 'Bob Wilson', reason: 'Conference', days: 1 },
+      { date: '2024-09-23', employee: 'Carol Brown', reason: 'Vacation', days: 1 },
+      { date: '2024-09-23', employee: 'David Lee', reason: 'Family Event', days: 1 },
+    ];
+
+    const processLeave = (leave, days) => {
       const employee = leave.employee;
       if (!employeeMap[employee]) {
         employeeMap[employee] = { 
@@ -38,13 +43,42 @@ const LeaveBalanceReport = ({ leaveData }) => {
         };
       }
       
+      switch (leave.reason.toLowerCase()) {
+        case 'vacation':
+          employeeMap[employee].used.annual += days;
+          break;
+        case 'sick leave':
+          employeeMap[employee].used.sick += days;
+          break;
+        case 'personal day':
+        case 'family event':
+          employeeMap[employee].used.personal += days;
+          break;
+        default:
+          employeeMap[employee].used.annual += days;
+      }
+    };
+    
+    const filteredLeaveData = leaveData.filter(leave => {
+      const leaveDate = moment(leave.start);
+      return leaveDate.year() === selectedYear && leaveDate.month() === selectedMonth;
+    });
+    
+    filteredLeaveData.forEach(leave => {
       const start = moment(leave.start);
       const end = moment(leave.end);
       const duration = moment.duration(end.diff(start));
       const days = duration.asDays() + 1;
       
-      employeeMap[employee].used.annual += days;
+      processLeave(leave, days);
     });
+
+    // Process static dates if the selected month and year match
+    if (selectedYear === 2024 && selectedMonth === 8) { // September is month 8 (0-indexed)
+      staticDates.forEach(staticLeave => {
+        processLeave(staticLeave, staticLeave.days);
+      });
+    }
 
     const employeeList = Object.values(employeeMap);
     setEmployees(employeeList);

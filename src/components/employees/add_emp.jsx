@@ -47,7 +47,7 @@ const AddEmployee = () => {
   };
 
   return (
-    <Paper className="add-employee-form">
+    <Paper className="add-employee-form" elevation={3}>
       <Typography variant="h3" component="h2" align="center" gutterBottom>
         New Employee Registration Form
       </Typography>

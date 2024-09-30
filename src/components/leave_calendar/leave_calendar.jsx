@@ -116,6 +116,27 @@ const leave_calendar = ({ leaveData, onLeaveDataChange }) => {
 
   const events = useCallback(() => {
     const eventMap = {};
+    
+    // Static dates for September 2024
+    const staticDates = [
+      { date: '2024-09-02', employeesOnLeave: 2, employees: [{ name: 'John Doe', reason: 'Vacation' }, { name: 'Jane Smith', reason: 'Sick Leave' }] },
+      { date: '2024-09-15', employeesOnLeave: 1, employees: [{ name: 'Alice Johnson', reason: 'Personal Day' }] },
+      { date: '2024-09-23', employeesOnLeave: 3, employees: [{ name: 'Bob Wilson', reason: 'Conference' }, { name: 'Carol Brown', reason: 'Vacation' }, { name: 'David Lee', reason: 'Family Event' }] },
+    ];
+
+    // Add static dates to the eventMap
+    staticDates.forEach(staticDate => {
+      const date = staticDate.date;
+      eventMap[date] = {
+        start: new Date(date),
+        end: new Date(date),
+        title: "Employees on Leave",
+        employeesOnLeave: staticDate.employeesOnLeave,
+        employees: staticDate.employees
+      };
+    });
+
+    // Process dynamic leaveData
     leaveData.forEach(leave => {
       const start = moment(leave.start);
       const end = moment(leave.end);

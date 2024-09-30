@@ -7,19 +7,34 @@ import AddEmployee from './components/employees/add_emp'; // Import the AddEmplo
 import LeaveApprovalSystem from './components/leave_atteandance/LeaveApprovalSystem'; // Import the LeaveApprovalSystem component
 import LeaveCalendar from './components/leave_calendar/leave_calendar';
 import LeaveBalanceReport from './components/leave_balance/leave_balance'; // Import the LeaveBalanceReport component
+import AnnouncementPage from './components/announcements/announcement'; // Import the AnnouncementPage component
+import { supabase } from './supabaseClient';
+import './App.css';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [leaveData, setLeaveData] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+ 
   useEffect(() => {
-    // Initialize leave data when the app loads
-    const initialLeaveData = [
-      { start: new Date(2024, 8, 1), end: new Date(2024, 8, 5), employee: "John Doe", reason: "Vacation" },
-      { start: new Date(2024, 8, 5), end: new Date(2024, 8, 7), employee: "Mike Johnson", reason: "Personal Leave" },
-      { start: new Date(2024, 8, 10), end: new Date(2024, 8, 14), employee: "Emily Brown", reason: "Work from Home" },
-    ];
-    setLeaveData(initialLeaveData);
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setIsAuthenticated(true);
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleLogin = (status) => {
@@ -40,11 +55,26 @@ function App() {
     setLeaveData(newLeaveData);
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Or a loading spinner
+  }
+
   return (
     <Router>
-      <div style={{ display: 'flex' }}>
-        {isAuthenticated && <Sidebar onLogout={handleLogout} />}
-        <div style={{ flexGrow: 1, padding: 20 }}>
+      <div className="app">
+        {isAuthenticated && (
+          <Sidebar 
+            onLogout={handleLogout} 
+            isMobile={isMobile}
+            isOpen={sidebarOpen}
+            toggleSidebar={toggleSidebar}
+          />
+        )}
+        <div className={`main-content ${isAuthenticated && !isMobile ? 'with-sidebar' : ''}`}>
           <Routes>
             <Route
               path="/"
@@ -105,6 +135,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <LeaveBalanceReport leaveData={leaveData} />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for Announcements */}
+            <Route
+              path="/announcements"
+              element={
+                isAuthenticated ? (
+                  <AnnouncementPage />
                 ) : (
                   <Navigate to="/" replace />
                 )
