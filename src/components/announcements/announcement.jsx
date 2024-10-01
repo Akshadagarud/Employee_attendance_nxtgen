@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, CardContent, TextField, Radio, RadioGroup, FormControlLabel, FormControl, Typography, Snackbar, Alert, IconButton } from '@mui/material'
+import { Button, Card, CardContent, TextField, Radio, RadioGroup, FormControlLabel, FormControl, Typography, Snackbar, Alert, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import Select from 'react-select'
 import { Send, Announcement as AnnouncementIcon, Delete as DeleteIcon } from '@mui/icons-material'
 import './announcement.css'
@@ -26,6 +26,7 @@ export default function AnnouncementPage() {
   const [selectedEmployees, setSelectedEmployees] = useState([])
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
   const [announcements, setAnnouncements] = useState(previousAnnouncements)
+  const [deleteConfirmation, setDeleteConfirmation] = useState({ open: false, id: null })
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -62,6 +63,22 @@ export default function AnnouncementPage() {
   const handleDeleteAnnouncement = (id) => {
     setAnnouncements(announcements.filter(announcement => announcement.id !== id))
     setSnackbar({ open: true, message: "Announcement deleted successfully.", severity: "success" })
+  }
+
+  const handleDeleteClick = (id) => {
+    setDeleteConfirmation({ open: true, id: id })
+  }
+
+  const handleConfirmDelete = () => {
+    if (deleteConfirmation.id !== null) {
+      setAnnouncements(announcements.filter(announcement => announcement.id !== deleteConfirmation.id))
+      setSnackbar({ open: true, message: "Announcement deleted successfully.", severity: "success" })
+    }
+    setDeleteConfirmation({ open: false, id: null })
+  }
+
+  const handleCancelDelete = () => {
+    setDeleteConfirmation({ open: false, id: null })
   }
 
   const employeeOptions = employees.map(emp => ({ value: emp.id, label: emp.name }))
@@ -145,7 +162,7 @@ export default function AnnouncementPage() {
                         <td>
                           <IconButton
                             aria-label="delete"
-                            onClick={() => handleDeleteAnnouncement(item.id)}
+                            onClick={() => handleDeleteClick(item.id)}
                             className="delete-button"
                           >
                             <DeleteIcon />
@@ -160,6 +177,27 @@ export default function AnnouncementPage() {
           </Card>
         </div>
       </div>
+      <Dialog
+        open={deleteConfirmation.open}
+        onClose={handleCancelDelete}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Announcement"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this announcement? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}

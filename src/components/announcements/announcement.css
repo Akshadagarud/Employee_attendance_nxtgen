@@ -71,29 +71,38 @@
 .announcement-table-container {
   width: 100%;
   margin-bottom: 1rem;
+  overflow-x: auto; /* Add horizontal scroll for small screens */
 }
 
 .announcement-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-}
-
-.announcement-table th,
-.announcement-table td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  word-break: break-word;
+  min-width: 600px; /* Ensure minimum width to prevent wrapping */
 }
 
 .announcement-table th {
   background-color: var(--primary-color);
   color: white;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  padding: 1rem;
-  border-bottom: 2px solid var(--primary-dark);
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.announcement-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+}
+
+.announcement-table td:nth-child(2) {
+  max-width: 300px; /* Limit width of announcement text column */
+  white-space: normal; /* Allow wrapping for announcement text */
 }
 
 .announcement-table tr:last-child td {
@@ -177,6 +186,11 @@
     margin-left: -1rem;
     margin-right: -1rem;
     padding: 0 1rem;
+    overflow-x: auto; /* Ensure horizontal scroll on small screens */
+  }
+
+  .announcement-table {
+    min-width: 600px; /* Maintain minimum width on small screens */
   }
 
   .announcement-table th,
