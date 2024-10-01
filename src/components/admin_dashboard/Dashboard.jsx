@@ -144,33 +144,35 @@ const Dashboard = () => {
       <div className="grid-container">
         <div className="grid-item">
           <Card className="card">
-            <CardContent className="card-content">
-              <FormControl variant="outlined" className="filter" fullWidth>
-                <InputLabel>Time Range</InputLabel>
-                <Select
-                  value={timeFilter}
-                  onChange={(e) => setTimeFilter(e.target.value)}
-                  label="Time Range"
-                >
-                  <MenuItem value="pastWeek">Past Week</MenuItem>
-                  <MenuItem value="pastMonth">Past Month</MenuItem>
-                  <MenuItem value="past3Months">Past 3 Months</MenuItem>
-                  <MenuItem value="past6Months">Past 6 Months</MenuItem>
-                  <MenuItem value="pastYear">Past Year</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl variant="outlined" className="filter" fullWidth>
-                <InputLabel>Employee</InputLabel>
-                <Select
-                  value={employeeFilter}
-                  onChange={(e) => setEmployeeFilter(e.target.value)}
-                  label="Employee"
-                >
-                  {employees.map((employee) => (
-                    <MenuItem key={employee} value={employee}>{employee}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+            <CardContent className="card-content filter-card-content">
+              <div className="filter-container">
+                <FormControl variant="outlined" className="filter" fullWidth size="small">
+                  <InputLabel>Time Range</InputLabel>
+                  <Select
+                    value={timeFilter}
+                    onChange={(e) => setTimeFilter(e.target.value)}
+                    label="Time Range"
+                  >
+                    <MenuItem value="pastWeek">Past Week</MenuItem>
+                    <MenuItem value="pastMonth">Past Month</MenuItem>
+                    <MenuItem value="past3Months">Past 3 Months</MenuItem>
+                    <MenuItem value="past6Months">Past 6 Months</MenuItem>
+                    <MenuItem value="pastYear">Past Year</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl variant="outlined" className="filter" fullWidth size="small">
+                  <InputLabel>Employee</InputLabel>
+                  <Select
+                    value={employeeFilter}
+                    onChange={(e) => setEmployeeFilter(e.target.value)}
+                    label="Employee"
+                  >
+                    {employees.map((employee) => (
+                      <MenuItem key={employee} value={employee}>{employee}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
             </CardContent>
           </Card>
         </div>

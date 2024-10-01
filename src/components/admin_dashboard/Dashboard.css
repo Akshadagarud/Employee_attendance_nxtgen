@@ -2,8 +2,8 @@
   flex-grow: 1;
   padding: 24px;
   background-color: #f5f5f5;
-  min-height: 100vh; /* Add this line */
-  margin: 0; /* Add this line */
+  min-height: 100vh; 
+  margin: 0; 
 }
 
 .dashboard-container .dashboard-title {
@@ -79,7 +79,7 @@
   height: 350px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 1400px) {
   .grid-item, .grid-item.wide {
     flex-basis: calc(50% - 12px);
@@ -105,12 +105,12 @@
   }
 }
 
-/* Adjustments for charts */
+
 .recharts-wrapper {
   margin: 0 auto;
 }
 
-/* Add this new rule at the end of the file */
+
 body, html {
   margin: 0;
   padding: 0;
@@ -136,28 +136,28 @@ body, html {
   margin-bottom: 16px;
 }
 
-/* Add this to your existing CSS file */
+
 .filter.MuiTextField-root {
   min-width: 200px;
   background-color: white;
 }
 
-/* Add this new rule */
+
 .filter:last-child {
   margin-bottom: 0;
 }
 
-/* Styles for the first card (filters card) */
+
 .grid-item:first-child .card {
-  height: auto; /* Allow the card to adjust its height based on content */
+  height: 100%; /* Change from 'auto' to '100%' */
 }
 
 .grid-item:first-child .card-content {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align content to the top */
-  height: auto; /* Allow content to determine height */
+  justify-content: space-between; /* Change from 'flex-start' to 'space-between' */
+  height: 100%; /* Change from 'auto' to '100%' */
 }
 
 .grid-item:first-child .filter {
@@ -169,7 +169,7 @@ body, html {
   margin-bottom: 0;
 }
 
-/* Styles for other cards (keep them unchanged) */
+
 .grid-item:not(:first-child) .card {
   height: 100%;
 }
@@ -180,7 +180,7 @@ body, html {
 }
 
 
-/* Tablet view (768px) */
+
 @media (max-width: 768px) {
   .grid-container {
     gap: 16px;
@@ -211,7 +211,7 @@ body, html {
   }
 }
 
-/* Mobile view (480px) */
+
 @media (max-width: 480px) {
   .dashboard-container {
     padding: 16px;
@@ -245,7 +245,7 @@ body, html {
     height: 200px;
   }
 
-  /* Adjust filter dropdowns for better mobile experience */
+ 
   .filter {
     margin-bottom: 12px;
   }
@@ -253,5 +253,29 @@ body, html {
   .MuiSelect-select {
     padding: 8px 12px;
   }
+}
+
+
+.filter-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-card-content .card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.filter-card-content .filter {
+  width: 100%;
 }
 
