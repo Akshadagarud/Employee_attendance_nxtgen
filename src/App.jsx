@@ -10,6 +10,7 @@ import LeaveBalanceReport from './components/leave_balance/leave_balance'; // Im
 import AnnouncementPage from './components/announcements/announcement'; // Import the AnnouncementPage component
 import { supabase } from './supabaseClient';
 import './App.css';
+import ManageEmployees from './components/employees/manageemployees'; // Import the ManageEmployees component
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -146,6 +147,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <AnnouncementPage />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for Manage Employees */}
+            <Route
+              path="/manage/employees/manage"
+              element={
+                isAuthenticated ? (
+                  <ManageEmployees />
                 ) : (
                   <Navigate to="/" replace />
                 )

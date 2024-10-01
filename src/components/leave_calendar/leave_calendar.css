@@ -232,9 +232,9 @@
 
 /* Styles for month and year dropdowns */
 .rbc-toolbar-label select {
-  appearance: none;
-  -webkit-appearance: none;
   -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
@@ -280,14 +280,9 @@
 }
 
 .rbc-toolbar-select-group select {
-  margin-left: 8px;
-}
-
-/* Styles for month and year dropdowns */
-.rbc-toolbar-select-group select {
-  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;

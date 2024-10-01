@@ -297,9 +297,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .filter-select {
-  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
   padding: 10px 35px 10px 15px;
   font-size: 14px;
   font-weight: 500;
