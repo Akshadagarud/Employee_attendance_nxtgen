@@ -325,3 +325,13 @@
   color: white;
   font-weight: 600;
 }
+
+.employee-select {
+  width: 300px;
+}
+
+@media (max-width: 768px) {
+  .employee-select {
+    width: 100%;
+  }
+}

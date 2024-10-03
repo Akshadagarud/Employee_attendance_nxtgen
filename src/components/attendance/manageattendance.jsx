@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import { format } from 'date-fns'
 import './manageattendance.css'
+import ReactSelect from 'react-select'
 
 const GRACE_PERIOD_MINUTES = 15
 
@@ -52,6 +53,7 @@ export default function AttendanceDashboard() {
     reason: ''
   })
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [selectedEmployees, setSelectedEmployees] = useState([])
 
   // ... (keep the useEffect hooks as they are) ...
 
@@ -109,6 +111,19 @@ export default function AttendanceDashboard() {
     setSelectedDate(new Date(event.target.value));
   };
 
+  const handleEmployeeSelect = (selectedOptions) => {
+    setSelectedEmployees(selectedOptions);
+  };
+
+  const getFilteredEmployees = () => {
+    if (selectedEmployees.length === 0) {
+      return employees;
+    }
+    return employees.filter(employee => 
+      selectedEmployees.some(selected => selected.value === employee.id)
+    );
+  };
+
   return (
     <Container maxWidth={false} className="attendance-dashboard">
       <header className="attendance-dashboard__header">
@@ -116,22 +131,14 @@ export default function AttendanceDashboard() {
           <ManageAccounts className="attendance-dashboard__icon" />
           Manage Attendance
         </Typography>
-        <Box display="flex" alignItems="center" className="attendance-dashboard__date-time">
-          <Typography variant="body1" color="textSecondary" className="attendance-dashboard__current-time">
-            Current Time: {currentTime.toLocaleTimeString()}
-          </Typography>
-          <TextField
-            type="date"
-            value={format(selectedDate, 'yyyy-MM-dd')}
-            onChange={handleDateChange}
-            variant="outlined"
-            size="small"
-            className="attendance-dashboard__date-picker"
-            InputProps={{
-              startAdornment: (
-                <CalendarToday color="action" className="attendance-dashboard__calendar-icon" />
-              ),
-            }}
+        <Box className="attendance-dashboard__search">
+          <ReactSelect
+            isMulti
+            options={employees.map(emp => ({ value: emp.id, label: emp.name }))}
+            value={selectedEmployees}
+            onChange={handleEmployeeSelect}
+            placeholder="Search employees..."
+            className="employee-select"
           />
         </Box>
       </header>
@@ -178,6 +185,25 @@ export default function AttendanceDashboard() {
             </Grid>
           </Grid>
           
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="body1" color="textSecondary" className="attendance-dashboard__current-time">
+              Current Time: {currentTime.toLocaleTimeString()}
+            </Typography>
+            <TextField
+              type="date"
+              value={format(selectedDate, 'yyyy-MM-dd')}
+              onChange={handleDateChange}
+              variant="outlined"
+              size="small"
+              className="attendance-dashboard__date-picker"
+              InputProps={{
+                startAdornment: (
+                  <CalendarToday color="action" className="attendance-dashboard__calendar-icon" />
+                ),
+              }}
+            />
+          </Box>
+          
           <Paper className="attendance-dashboard__employee-table">
             <Table>
               <TableHead>
@@ -197,7 +223,7 @@ export default function AttendanceDashboard() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.map((employee) => (
+                {getFilteredEmployees().map((employee) => (
                   <TableRow key={employee.id}>
                     <TableCell>{employee.name}</TableCell>
                     <TableCell>{employee.expectedCheckIn}</TableCell>
