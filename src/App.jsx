@@ -3,20 +3,21 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import LoginPage from './components/admin_login/LoginPage';
 import Sidebar from './components/sidebar/Sidebar';
 import Dashboard from './components/admin_dashboard/Dashboard';
-import AddEmployee from './components/employees/add_emp'; // Import the AddEmployee component
 import LeaveApprovalSystem from './components/leave_atteandance/LeaveApprovalSystem'; // Import the LeaveApprovalSystem component
 import LeaveCalendar from './components/leave_calendar/leave_calendar';
 import LeaveBalanceReport from './components/leave_balance/leave_balance'; // Import the LeaveBalanceReport component
 import AnnouncementPage from './components/announcements/announcement'; // Import the AnnouncementPage component
+import ManageEmployees from './components/employees/manageemployees'; // Import the ManageEmployees component
+import ManageAttendance from './components/attendance/manageattendance'; // Import the ManageAttendance component
 import { supabase } from './supabaseClient';
 import './App.css';
-import ManageEmployees from './components/employees/manageemployees'; // Import the ManageEmployees component
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [leaveData, setLeaveData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+ 
   const [sidebarOpen, setSidebarOpen] = useState(false);
  
   useEffect(() => {
@@ -97,17 +98,6 @@ function App() {
                 )
               }
             />
-            {/* Add the new route for AddEmployee */}
-            <Route
-              path="/manage/employees/add"
-              element={
-                isAuthenticated ? (
-                  <AddEmployee />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
             {/* Add the new route for LeaveApprovalSystem */}
             <Route
               path="/manage/leaves/approve"
@@ -158,6 +148,17 @@ function App() {
               element={
                 isAuthenticated ? (
                   <ManageEmployees />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            {/* Add the new route for Manage Attendance */}
+            <Route
+              path="/manage/attendance/manage"
+              element={
+                isAuthenticated ? (
+                  <ManageAttendance />
                 ) : (
                   <Navigate to="/" replace />
                 )

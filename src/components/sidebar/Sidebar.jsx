@@ -96,7 +96,6 @@ const Sidebar = ({ onLogout, isMobile, isOpen, toggleSidebar }) => {
           <NestedMenuItem
             icon={<PeopleIcon />}
             primary="Employees"
-            onClick={() => navigate('/manage/employees')}
             path="/manage/employees"
           >
             <NestedMenuItem
@@ -115,15 +114,8 @@ const Sidebar = ({ onLogout, isMobile, isOpen, toggleSidebar }) => {
           <NestedMenuItem
             icon={<AccessTimeIcon />}
             primary="Attendance"
-            onClick={() => navigate('/manage/attendance')}
             path="/manage/attendance"
           >
-            <NestedMenuItem
-              primary="View Attendance"
-              onClick={() => navigate('/manage/attendance/view')}
-              path="/manage/attendance/view"
-              depth={2}
-            />
             <NestedMenuItem
               primary="Manage Attendance"
               onClick={() => navigate('/manage/attendance/manage')}
